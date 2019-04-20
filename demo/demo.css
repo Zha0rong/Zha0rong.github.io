@@ -1,0 +1,114 @@
+.banner-section {
+	height: 70vh;
+	position: relative;
+}
+.banner-section .padding {
+	height: 100%;
+}
+.banner-section .overlay {
+	background: rgba(0, 0, 0, 0.5);
+}
+.banner-section .banner-contents {
+	left: 50%;
+	top: 50%;
+	padding: 0 3%;
+	position: absolute;
+	text-shadow: 1px 0px 1px #000;
+	width: 100%;
+
+	-webkit-transform: translate(-50%, -50%);
+	-moz-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	-o-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+}
+.banner-logo {
+	padding-bottom: 5%;
+}
+.banner-title,
+.banner-sub-title {
+	color: #fff;
+	display: inline-block;
+	margin: 0 0 4px;
+	text-transform: uppercase;
+	width: 100%;
+}
+.banner-title {
+	font-size: 34px;
+}
+.banner-sub-title {
+	font-size: 26px;
+}
+.banner-section .btn {
+	background: #000;
+	border-color: #000;
+	color: #fff;
+	font-size: 14px;
+	letter-spacing: 1px;
+	line-height: 34px;
+	margin-top: 3%;
+	text-transform: uppercase;
+	text-shadow: none;
+}
+.demo-contents .item-title {
+	color: #000;
+	font-size: 18px;
+	margin: 0;
+	padding: 30px 0;
+	text-transform: uppercase;
+}
+.demo-contents .item-title a {
+	color: #000;
+}
+.demo-contents .item {
+	border: 1px solid #eceff1;
+	margin: 20px 0;
+	text-align: center;
+}
+.demo-contents .item-thumb {
+	position: relative;
+}
+.demo-contents .item-thumb:before {
+	content: '';
+	position: absolute;
+	background: rgba(0, 0, 0, 0.75);
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	opacity: 0;
+
+	-webkit-transition: all 0.25s ease;
+	transition: all 0.25s ease;	
+}
+.demo-contents .item-thumb:hover:before {
+	opacity: 0.5;
+}
+.demo-contents .item-hover {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 100%;
+	opacity: 0;
+
+	-webkit-transition: all 0.25s ease;
+	transition: all 0.25s ease;
+
+	-webkit-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+}
+.demo-contents .item-thumb:hover .item-hover {
+	opacity: 1;
+}
+.demo-contents .btn-container {
+	margin: 5% 0;
+}
+
+@media (max-width: 767px) {
+	.banner-title {
+		font-size: 18px;
+	}
+	.banner-sub-title {
+		font-size: 15px;
+	}
+}
