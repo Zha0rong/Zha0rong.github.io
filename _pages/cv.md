@@ -1,6 +1,6 @@
 ---
 layout: archive
-title: "CV"
+title: "Zhaorong's CV"
 permalink: /cv/
 author_profile: true
 redirect_from:
@@ -11,37 +11,63 @@ redirect_from:
 
 Education
 ======
-* Ph.D in Version Control Theory, GitHub University, 2018 (expected)
-* M.S. in Jekyll, GitHub University, 2014
-* B.S. in GitHub, GitHub University, 2012
+* Ph.D in Bioinformatics, Boston University, 2026
+* M.S. in Bioinformatics, Boston University, 2019
+* B.S. in Applied Mathematics, Stony Brook University, 2018
+* B.S. in Biology, Stony Brook University, 2018
 
 Work experience
 ======
-* Spring 2024: Academic Pages Collaborator
-  * GitHub University
-  * Duties includes: Updates and improvements to template
-  * Supervisor: The Users
+* August 2019 - Present: Bioinformatic Scientist
+  * Harvard Medical School
 
-* Fall 2015: Research Assistant
-  * GitHub University
-  * Duties included: Merging pull requests
-  * Supervisor: Professor Hub
+* August 2022 - April 2023: Bioinformatics Co-op
+  * Merck
 
-* Summer 2015: Research Assistant
-  * GitHub University
-  * Duties included: Tagging issues
-  * Supervisor: Professor Git
+* January 2019 - August 2020: Research Assistant
+  * Boston University
+
+* August 2018 - January 2019: Research Assistant
+  * Koch Institute
   
 Skills
 ======
-* Skill 1
-* Skill 2
-  * Sub-skill 2.1
-  * Sub-skill 2.2
-  * Sub-skill 2.3
-* Skill 3
+* Programming Language:
+  * Java
+  * C
+  * Python
+  * R
+  * Perl
+  * SQL
+* Pipeline system
+  * Snakemake
+  * Nextflow
+* Bioinformatics analysis
+  * Spatial Transcriptome analysis
+    * Cell segmentation calling
+    * Clustering and Cell type annotation
+    * NICHE detection
+    * Intercellular ligand-receptor communication
+  * Single cell Transcriptome
+    * Alignment and quantification
+    * Clustering and Cell type annotation
+    * Trajectory analysis (Pseudo-time and RNA velocity)
+    * Intercellular ligand-receptor communication
+    * Cell Atlas Construction
+  * Bulk RNA-Seq
+    * Alignment and Quantification
+    * Differential expression analysis
+    * WGCNA
+    * Biomarker signature extractions
+    * Virus detection and viral gene expression quantification
+  * Epigenetic Data (ATAC/ChIP-Seq/CUT&RUN)
+    * Alignment, QC and Peak calling
+    * Differential accessibility/methylation/acetylation analysis
+  * Multi-ome data integration and analysis
+    * Integration transcriptome and epigeome data
 
-Publications
+
+<!-- Publications
 ======
   <ul>{% for post in site.publications reversed %}
     {% include archive-single-cv.html %}
@@ -62,3 +88,5 @@ Teaching
 Service and leadership
 ======
 * Currently signed in to 43 different slack teams
+-->
+
