@@ -1,0 +1,15 @@
+---
+title: "Eradicating Drug-tolerant Persister Cells in EGFR-Mutated Non–Small Cell Lung Cancer by Targeting TROP2 with CAR-T Cellular Therapy"
+collection: publications
+category: manuscripts
+permalink: /publication/2025-11-03-Eradicating-Drug-tolerant-Persister-Cells-in-EGFR-Mutated-Non–Small-Cell-Lung-Cancer-by-Targeting-TROP2-with-CAR-T-Cellular-Therapy
+excerpt: 'EGFR tyrosine kinase inhibitors have dramatically improved outcomes for patients with EGFR-mutated non–small cell lung cancer (NSCLC), but relapse frequently occurs because of drug-tolerant persister (DTP) cells that can evolve and develop diverse mechanisms of drug resistance. In samples from patients with EGFR-mutated NSCLC treated with EGFR tyrosine kinase inhibitors in the neoadjuvant setting, we observed enriched expression of the cell surface protein TROP2, a target of clinically active antibody–drug conjugates (ADC). We confirmed these findings across multiple EGFR-mutated NSCLC cell line and patient-derived xenograft models treated with osimertinib in vivo. Treatment with the TROP2 ADC sacituzumab govitecan at the time of osimertinib-induced minimal residual disease only modestly delayed tumor recurrence in vivo, whereas a single infusion of sacituzumab-based TROP2-directed chimeric antigen receptor (CAR) T cells significantly prolonged relapse-free survival, with evidence of cure. These data highlight the potential of engineering TROP2 CAR T-cell therapy to eliminate EGFR DTPs in patients.'
+date: 2025-11-03
+venue: 'Cancer Discovery'
+paperurl: 'https://aacrjournals.org/cancerdiscovery/article-abstract/15/11/2235/766787/Eradicating-Drug-tolerant-Persister-Cells-in-EGFR'
+citation: 'Baldacci, S., Brea, E. J., Facchinetti, F., Li, Z., Ngo, K., Malhotra, S., ... & Barbie, D. A. (2025). Eradicating Drug-tolerant Persister Cells in EGFR-Mutated Non–Small Cell Lung Cancer by Targeting TROP2 with CAR-T Cellular Therapy. Cancer discovery, 15(11), 2235-2250.'
+---
+
+EGFR tyrosine kinase inhibitors have dramatically improved outcomes for patients with EGFR-mutated non–small cell lung cancer (NSCLC), but relapse frequently occurs because of drug-tolerant persister (DTP) cells that can evolve and develop diverse mechanisms of drug resistance. In samples from patients with EGFR-mutated NSCLC treated with EGFR tyrosine kinase inhibitors in the neoadjuvant setting, we observed enriched expression of the cell surface protein TROP2, a target of clinically active antibody–drug conjugates (ADC). We confirmed these findings across multiple EGFR-mutated NSCLC cell line and patient-derived xenograft models treated with osimertinib in vivo. Treatment with the TROP2 ADC sacituzumab govitecan at the time of osimertinib-induced minimal residual disease only modestly delayed tumor recurrence in vivo, whereas a single infusion of sacituzumab-based TROP2-directed chimeric antigen receptor (CAR) T cells significantly prolonged relapse-free survival, with evidence of cure. These data highlight the potential of engineering TROP2 CAR T-cell therapy to eliminate EGFR DTPs in patients.
+
+
