@@ -107,6 +107,45 @@
   }
 }
 
+.plotly-search-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.75em;
+  margin: 1em 0 0.5em;
+  font-size: $type-size-6;
+}
+
+.plotly-search-input {
+  width: min(24em, 100%);
+  padding: 0.45em 0.65em;
+  border: 1px solid var(--global-border-color);
+  border-radius: $border-radius;
+  color: var(--global-text-color);
+  background-color: var(--global-bg-color);
+  font-family: $global-font-family;
+}
+
+.plotly-search-status {
+  color: var(--global-text-color-light);
+  white-space: nowrap;
+}
+
+@include breakpoint(max-width $small) {
+  .plotly-search-wrapper {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 0.35em;
+  }
+
+  .plotly-search-input {
+    width: 100%;
+  }
+
+  .plotly-search-status {
+    white-space: normal;
+  }
+}
+
 .page__hero {
   position: relative;
   margin-bottom: 2em;

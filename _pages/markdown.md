@@ -151,6 +151,21 @@ For larger plots, the code block can point to an external Plotly JSON file inste
 
 The external JSON file should contain the same Plotly figure object that would otherwise be written inline, including `data`, optional `layout`, and optional `config` fields. Any `layout` or `config` values included in the Markdown block will override top-level values from the external file.
 
+Plots that include point labels in their trace `text` arrays can also opt in to a search box. Matching points are highlighted with an overlay trace:
+
+```markdown
+    ```plotly
+    {
+      "src": "/assets/data/plotly/volcano-treatment-vs-control.json",
+      "search": {
+        "enabled": true,
+        "placeholder": "Search gene symbol...",
+        "maxMatches": 100
+      }
+    }
+    ```
+```
+
 ```plotly
 {
   "data": [

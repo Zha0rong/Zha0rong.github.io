@@ -93,10 +93,20 @@ function getOrCreatePlotlyChartElement(elem) {
   elem.parentElement.classList.add("hidden");
 
   let chartElement = elem.parentElement.nextElementSibling;
+  if (chartElement && chartElement.classList.contains("plotly-search-wrapper")) {
+    chartElement = chartElement.nextElementSibling;
+  }
+
   if (!chartElement || !chartElement.classList.contains("plotly-chart")) {
     chartElement = document.createElement("div");
     chartElement.classList.add("plotly-chart");
-    elem.parentElement.after(chartElement);
+
+    const searchElement = elem.parentElement.nextElementSibling;
+    if (searchElement && searchElement.classList.contains("plotly-search-wrapper")) {
+      searchElement.after(chartElement);
+    } else {
+      elem.parentElement.after(chartElement);
+    }
   }
 
   return chartElement;
@@ -116,6 +126,208 @@ function mergePlotlyConfig(externalData, blockConfig) {
   };
 }
 
+function normalizePlotlySearchConfig(searchConfig) {
+  if (searchConfig === true) {
+    return {
+      enabled: true,
+      placeholder: "Search points...",
+      maxMatches: 100
+    };
+  }
+
+  if (!searchConfig || searchConfig.enabled === false) {
+    return { enabled: false };
+  }
+
+  return {
+    enabled: true,
+    placeholder: searchConfig.placeholder || "Search points...",
+    maxMatches: searchConfig.maxMatches || 100
+  };
+}
+
+function getPlotlySearchElement(elem) {
+  const sibling = elem.parentElement.nextElementSibling;
+  return (sibling && sibling.classList.contains("plotly-search-wrapper")) ? sibling : null;
+}
+
+function getOrCreatePlotlySearchElement(elem, chartElement, searchConfig) {
+  let searchElement = getPlotlySearchElement(elem);
+  if (!searchElement) {
+    searchElement = document.createElement("div");
+    searchElement.classList.add("plotly-search-wrapper");
+
+    const input = document.createElement("input");
+    input.classList.add("plotly-search-input");
+    input.type = "search";
+    input.autocomplete = "off";
+    input.spellcheck = false;
+    searchElement.appendChild(input);
+
+    const status = document.createElement("span");
+    status.classList.add("plotly-search-status");
+    status.setAttribute("aria-live", "polite");
+    searchElement.appendChild(status);
+
+    chartElement.before(searchElement);
+  }
+
+  const input = searchElement.querySelector(".plotly-search-input");
+  input.placeholder = searchConfig.placeholder;
+
+  return searchElement;
+}
+
+function getPlotlySearchTerms(query) {
+  return query
+    .split(/[,\s]+/)
+    .map(function(term) {
+      return term.trim().toLowerCase();
+    })
+    .filter(function(term) {
+      return term.length > 0;
+    });
+}
+
+function findPlotlySearchMatches(jsonData, query, maxMatches) {
+  const terms = getPlotlySearchTerms(query);
+  const matches = [];
+  let totalMatches = 0;
+
+  if (terms.length === 0) {
+    return { matches: matches, totalMatches: totalMatches };
+  }
+
+  (jsonData.data || []).forEach(function(trace) {
+    if (!trace || !trace.text || !trace.x || !trace.y) {
+      return;
+    }
+
+    trace.text.forEach(function(label, index) {
+      const labelText = String(label || "");
+      const labelSearchText = labelText.toLowerCase();
+      const isMatch = terms.some(function(term) {
+        return labelSearchText.indexOf(term) !== -1;
+      });
+
+      if (!isMatch) {
+        return;
+      }
+
+      totalMatches += 1;
+      if (matches.length < maxMatches) {
+        matches.push({
+          x: trace.x[index],
+          y: trace.y[index],
+          text: labelText
+        });
+      }
+    });
+  });
+
+  return { matches: matches, totalMatches: totalMatches };
+}
+
+function updatePlotlySearchHighlight(chartElement, jsonData, query, searchConfig, statusElement) {
+  const maxMatches = searchConfig.maxMatches || 100;
+  const result = findPlotlySearchMatches(jsonData, query, maxMatches);
+  const existingIndex = (chartElement.data || []).findIndex(function(trace) {
+    return trace.name === "Search match";
+  });
+
+  if (result.totalMatches === 0) {
+    statusElement.textContent = query.trim() ? "No matches" : "";
+    if (existingIndex >= 0) {
+      Plotly.deleteTraces(chartElement, existingIndex);
+    }
+    return;
+  }
+
+  const labelMatches = result.matches.length <= 10;
+  const highlightTrace = {
+    type: "scattergl",
+    mode: labelMatches ? "markers+text" : "markers",
+    name: "Search match",
+    x: result.matches.map(function(match) { return match.x; }),
+    y: result.matches.map(function(match) { return match.y; }),
+    text: result.matches.map(function(match) { return match.text; }),
+    textposition: "top center",
+    marker: {
+      color: "#ffbf00",
+      size: 13,
+      line: {
+        color: "#111",
+        width: 2
+      }
+    },
+    hovertemplate: "Gene: %{text}<br>log2FC: %{x:.3f}<br>-log10 padj: %{y:.3f}<extra>Search match</extra>"
+  };
+
+  const statusText = (result.totalMatches === result.matches.length)
+    ? result.totalMatches + " match" + (result.totalMatches === 1 ? "" : "es")
+    : result.matches.length + " of " + result.totalMatches + " matches highlighted";
+  statusElement.textContent = statusText;
+
+  if (existingIndex >= 0) {
+    Plotly.deleteTraces(chartElement, existingIndex)
+      .then(function() {
+        return Plotly.addTraces(chartElement, highlightTrace);
+      });
+  } else {
+    Plotly.addTraces(chartElement, highlightTrace);
+  }
+}
+
+function setupPlotlySearch(elem, chartElement, jsonData, blockConfig) {
+  const searchConfig = normalizePlotlySearchConfig(blockConfig.search);
+  const existingSearchElement = getPlotlySearchElement(elem);
+
+  if (!searchConfig.enabled) {
+    if (existingSearchElement) {
+      existingSearchElement.remove();
+    }
+    return;
+  }
+
+  const searchElement = getOrCreatePlotlySearchElement(elem, chartElement, searchConfig);
+  const input = searchElement.querySelector(".plotly-search-input");
+  const status = searchElement.querySelector(".plotly-search-status");
+
+  input._plotlySearchState = {
+    chartElement: chartElement,
+    jsonData: jsonData,
+    searchConfig: searchConfig,
+    status: status
+  };
+
+  if (!input._plotlySearchBound) {
+    input.addEventListener("input", function() {
+      const state = input._plotlySearchState;
+      updatePlotlySearchHighlight(
+        state.chartElement,
+        state.jsonData,
+        input.value,
+        state.searchConfig,
+        state.status
+      );
+    });
+    input._plotlySearchBound = true;
+  }
+
+  if (input.value) {
+    updatePlotlySearchHighlight(chartElement, jsonData, input.value, searchConfig, status);
+  } else {
+    status.textContent = "";
+  }
+}
+
+function renderPlotlyFigure(elem, chartElement, jsonData, blockConfig) {
+  return Plotly.react(chartElement, jsonData.data, jsonData.layout, jsonData.config)
+    .then(function() {
+      setupPlotlySearch(elem, chartElement, jsonData, blockConfig);
+    });
+}
+
 function renderPlotlyElement(elem) {
   const blockConfig = JSON.parse(elem.textContent);
   const chartElement = getOrCreatePlotlyChartElement(elem);
@@ -130,14 +342,14 @@ function renderPlotlyElement(elem) {
       })
       .then(function(externalData) {
         const jsonData = applyPlotlyTheme(mergePlotlyConfig(externalData, blockConfig));
-        Plotly.react(chartElement, jsonData.data, jsonData.layout, jsonData.config);
+        renderPlotlyFigure(elem, chartElement, jsonData, blockConfig);
       })
       .catch(function(error) {
         chartElement.textContent = error.message;
       });
   } else {
     const jsonData = applyPlotlyTheme(blockConfig);
-    Plotly.react(chartElement, jsonData.data, jsonData.layout, jsonData.config);
+    renderPlotlyFigure(elem, chartElement, jsonData, blockConfig);
   }
 }
 
