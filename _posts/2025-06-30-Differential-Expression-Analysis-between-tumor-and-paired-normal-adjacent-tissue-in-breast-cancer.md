@@ -10,7 +10,7 @@ tags:
 
 ```plotly
 {
-  "src": "/assets/data/plotly/BRCA.Convoluted.Tumor.vs.Normal.Paired.full.shrunk.volcano.json"
+  "src": "/assets/data/plotly/BRCA.Convoluted.Tumor.vs.Normal.Paired.full.shrunk.volcano.json",
     "search": {
     "enabled": true,
     "placeholder": "Search gene symbol...",
