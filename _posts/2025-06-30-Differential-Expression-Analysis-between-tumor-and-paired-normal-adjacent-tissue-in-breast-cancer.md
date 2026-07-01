@@ -1,5 +1,5 @@
 ---
-title: 'Test'
+title: 'Differential expression analysis between tumor and paired normal adjacent tissue from breast cancer patients'
 date: 2026-06-30
 permalink: /posts/2025/06/30/Differential-Expression-Analysis-between-tumor-and-paired-normal-adjacent-tissue-in-breast-cancer/
 tags:
