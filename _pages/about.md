@@ -13,7 +13,7 @@ Who is visiting us?
 ======
 
 <div class="visitor-map">
-  <script type="text/javascript" id="mapmyvisitors" src="https://mapmyvisitors.com/map.js?cl=0e1633&w=a&t=m&d=uLEI4e3dpDHqYuj0M071jzmidCzckl28Ogdc5cRNpws&co=0b4975&cmo=3acc3a&cmn=ff5353&ct=cdd4d9"></script>
+  <script type='text/javascript' id='mapmyvisitors' src='https://mapmyvisitors.com/map.js?cl=0e1633&w=a&t=m&d=50xriIgyxQ1iyUIyLLeNS-NMsytm-KrZ5JZpwOGmBfw&co=0b4975&cmo=3acc3a&cmn=ff5353&ct=cdd4d9'></script>
 </div>
 
 
