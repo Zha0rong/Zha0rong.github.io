@@ -66,6 +66,13 @@ Skills
   * Multi-ome data integration and analysis
     * Integration transcriptome and epigeome data
 
+Publications
+======
+  <ul>{% for post in site.publications reversed %}
+    {% include archive-single-cv.html %}
+  {% endfor %}</ul>
+
+
 
 <!-- Publications
 ======
