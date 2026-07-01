@@ -71,11 +71,76 @@ if (mermaidElements.length > 0) {
    ========================================================================== */
 
 // Read the Plotly data from the code block, hide it, and render the chart as new node. This allows for the
-// JSON data to be retrieve when the theme is switched. The listener should only be added if the data is
+// JSON data to be retrieved when the theme is switched. The listener should only be added if the data is
 // actually present on the page.
 //
 // NOTE that plotlyDarkLayout and plotlyLightLayout will be exposed in the minimized file
 let plotlyElements = document.querySelectorAll("pre>code.language-plotly");
+
+function applyPlotlyTheme(jsonData) {
+  const theme = (determineComputedTheme() === "dark") ? plotlyDarkLayout : plotlyLightLayout;
+
+  if (jsonData.layout) {
+    jsonData.layout.template = (jsonData.layout.template) ? { ...theme, ...jsonData.layout.template } : theme;
+  } else {
+    jsonData.layout = { template: theme };
+  }
+
+  return jsonData;
+}
+
+function getOrCreatePlotlyChartElement(elem) {
+  elem.parentElement.classList.add("hidden");
+
+  let chartElement = elem.parentElement.nextElementSibling;
+  if (!chartElement || !chartElement.classList.contains("plotly-chart")) {
+    chartElement = document.createElement("div");
+    chartElement.classList.add("plotly-chart");
+    elem.parentElement.after(chartElement);
+  }
+
+  return chartElement;
+}
+
+function mergePlotlyConfig(externalData, blockConfig) {
+  return {
+    ...externalData,
+    layout: {
+      ...(externalData.layout || {}),
+      ...(blockConfig.layout || {})
+    },
+    config: {
+      ...(externalData.config || {}),
+      ...(blockConfig.config || {})
+    }
+  };
+}
+
+function renderPlotlyElement(elem) {
+  const blockConfig = JSON.parse(elem.textContent);
+  const chartElement = getOrCreatePlotlyChartElement(elem);
+
+  if (blockConfig.src) {
+    fetch(blockConfig.src)
+      .then(function(response) {
+        if (!response.ok) {
+          throw new Error("Failed to load Plotly data: " + blockConfig.src);
+        }
+        return response.json();
+      })
+      .then(function(externalData) {
+        const jsonData = applyPlotlyTheme(mergePlotlyConfig(externalData, blockConfig));
+        Plotly.react(chartElement, jsonData.data, jsonData.layout, jsonData.config);
+      })
+      .catch(function(error) {
+        chartElement.textContent = error.message;
+      });
+  } else {
+    const jsonData = applyPlotlyTheme(blockConfig);
+    Plotly.react(chartElement, jsonData.data, jsonData.layout, jsonData.config);
+  }
+}
+
 if (plotlyElements.length > 0) {
   document.addEventListener("readystatechange", function() {
     // Return if not ready
@@ -90,24 +155,7 @@ if (plotlyElements.length > 0) {
 
     // Once loaded, update the page elements to work with it
     script.onload = function() {
-      plotlyElements.forEach(function(elem) {
-        // Parse the Plotly JSON data and hide it
-        let jsonData = JSON.parse(elem.textContent);
-        elem.parentElement.classList.add("hidden");
-
-        // Add the Plotly node
-        let chartElement = document.createElement("div");
-        elem.parentElement.after(chartElement);
-
-        // Set the theme for the plot and render it
-        const theme = (determineComputedTheme() === "dark") ? plotlyDarkLayout : plotlyLightLayout;
-        if (jsonData.layout) {
-          jsonData.layout.template = (jsonData.layout.template) ? { ...theme, ...jsonData.layout.template } : theme;
-        } else {
-          jsonData.layout = { template: theme };
-        }
-        Plotly.react(chartElement, jsonData.data, jsonData.layout);
-      });
+      plotlyElements.forEach(renderPlotlyElement);
     }
 
     // Add the script to the document
@@ -116,22 +164,11 @@ if (plotlyElements.length > 0) {
 }
 
 function redrawPlotly() {
-  plotlyElements.forEach(function(elem) {
-    // Parse the Plotly JSON data
-    let jsonData = JSON.parse(elem.textContent);
+  if (typeof Plotly === "undefined") {
+    return;
+  }
 
-    // Get the Plotly node
-    let chartElement = $(elem).parent().next().get(0);
-
-    // Set the theme for the plot and render it
-    const theme = (determineComputedTheme() === "dark") ? plotlyDarkLayout : plotlyLightLayout;
-    if (jsonData.layout) {
-      jsonData.layout.template = (jsonData.layout.template) ? { ...theme, ...jsonData.layout.template } : theme;
-    } else {
-      jsonData.layout = { template: theme };
-    }
-    Plotly.react(chartElement, jsonData.data, jsonData.layout);
-  });
+  plotlyElements.forEach(renderPlotlyElement);
 }
 
 /* ==========================================================================

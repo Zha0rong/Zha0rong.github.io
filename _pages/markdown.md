@@ -139,6 +139,18 @@ Which produces the following:
 
 Essentially what is taking place is that the [Plotly attributes](https://plotly.com/javascript/reference/index/) are being taken from the code block as JSON data, parsed, and passed to Plotly along with a theme that matches the current site theme (i.e., a light theme, or a dark theme). This allows all plots that can be described via the `data` attribute to rendered with some limitations for the theme of the plot.
 
+For larger plots, the code block can point to an external Plotly JSON file instead of embedding the full figure data in the Markdown page:
+
+```markdown
+    ```plotly
+    {
+      "src": "/assets/data/plotly/volcano-treatment-vs-control.json"
+    }
+    ```
+```
+
+The external JSON file should contain the same Plotly figure object that would otherwise be written inline, including `data`, optional `layout`, and optional `config` fields. Any `layout` or `config` values included in the Markdown block will override top-level values from the external file.
+
 ```plotly
 {
   "data": [
@@ -452,4 +464,3 @@ This allows you to denote <var>variables</var>.
 **Footnotes**
 
 The footnotes in the page will be returned following this line, return to the section on <a href="#footnotes">Markdown Footnotes</a>.
-
